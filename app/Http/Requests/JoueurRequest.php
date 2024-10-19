@@ -9,11 +9,13 @@ class JoueurRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'nom' => 'required|string|max:255',
-            'prenom' => 'required|string|max:255',
-            'date_naissance' => 'required|date',
-            'poste' => 'required|string|max:50',
-            'equipe_id' => 'required|exists:equipes,id', // Supposant que tu as une table équipes
+ 
+            'nom' => ['required', 'string', 'max:255'],
+            'age' => ['required', 'integer', 'min:1'],
+            'licence' => ['required', 'string', 'unique:joueurs,licence'],
+            'equipe_id' => ['required', 'exists:equipes,id'],
+            'categorie_id' => ['required', 'exists:categories,id'],
+          
         ];
     }
 }

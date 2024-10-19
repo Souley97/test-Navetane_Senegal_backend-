@@ -25,7 +25,6 @@ class CompetitionRequest extends FormRequest
     {
         return [
             'nom' => 'required|string|max:255',
-            'lieu' => 'required|string|max:255',
             'date_debut' => 'required|date',
             'date_fin' => 'required|date|after_or_equal:date_debut',
         ];

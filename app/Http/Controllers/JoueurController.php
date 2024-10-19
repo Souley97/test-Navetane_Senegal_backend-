@@ -7,6 +7,7 @@ use App\Http\Requests\ValidationRequest;
 use App\Http\Requests\JoueurRequest;
 use App\Services\JoueurService;
 use Illuminate\Http\JsonResponse;
+use Request;
 
 class JoueurController extends Controller
 {
@@ -31,10 +32,10 @@ class JoueurController extends Controller
     /**
      * Créer un nouveau joueur.
      *
-     * @param ValidationRequest $request
+     * @param JoueurRequest $request
      * @return JsonResponse
      */
-    public function store(ValidationRequest $request): JsonResponse
+    public function store(JoueurRequest $request): JsonResponse
     {
         $joueur = $this->joueurService->creerJoueur($request->validated());
         return response()->json($joueur, 201);

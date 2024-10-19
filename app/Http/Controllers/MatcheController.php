@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\ValidationRequest;
 
 use App\Http\Requests\MatcheRequest;
-use App\Models\matche;
+use App\Models\Matche;
 use App\Services\MatcheService;
 use Illuminate\Http\JsonResponse;
 
@@ -25,15 +25,13 @@ class MatcheController extends Controller
      */
     public function index(): JsonResponse
     {
-        $matches = $this->matcheService->recupererTousLesMatches();
+        // avec l'objet equipes 
+        $matches = Matche::with(['equipeLocal', 'equipeVisiteur'])->with(relations: 'resultat')->get();
+
+        // avec resultat
+
         return response()->json($matches, 200);
-
-        $matches = $this->matcheService->getHistoricalMatches();
-
-        return response()->json([
-            'message' => 'Historique des matchs récupéré avec succès.',
-            'data' => $matches,
-        ], 200);
+     
     }
 
     /**
@@ -68,22 +66,18 @@ class MatcheController extends Controller
      * @param int $id
      * @return JsonResponse
      */
-    public function update(MatcheRequest $request, int $id): JsonResponse
-    {
+    public function update(MatcheRequest $request, int $id): JsonResponse{
         $matche = $this->matcheService->recupererMatcheParId($id);
-        $matche = $this->matcheService->mettreAJourMatche($match, $request->validated());
+        $matche = $this->matcheService->mettreAJourMatche($matche, $request->validated());
         return response()->json($matche, 200);
     }
+   
+    // /** destroy
+    // * Supprimer un match.
 
-    /**
-     * Supprimer un matche.
-     *
-     * @param int $id
-     * @return JsonResponse
-     */
-    public function destroy(int $id): JsonResponse
+    public function destroy($id): JsonResponse
     {
-        $matche = $this->matcheService->recupererMatchParId($id);
+        $matche = $this->matcheService->recupererMatcheParId($id);
         $this->matcheService->supprimerMatche($matche);
         return response()->json(null, 204);
     }
@@ -136,6 +130,15 @@ public function updateClassement($equipeId, $resultat)
     $classement->diff_buts = $classement->buts_marques - $classement->buts_encaisses;
 
     $classement->save();
+}
+
+// Matches à venir
+
+public function matchesAVenir()
+{
+
+    $matcheAvenir = Matche::with(['equipeLocal', 'equipeVisiteur'])->with(relations: 'resultat')->where('date', '>=', now())->get();
+    return response()->json($matcheAvenir, 200);
 }
 
 }

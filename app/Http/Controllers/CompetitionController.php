@@ -35,14 +35,7 @@ class CompetitionController extends Controller
      */
     public function store(CompetitionRequest $request): JsonResponse
     {
-        // $competition = $this->competitionService->creerCompetition($request->validated());
-        // if(!$competition){
-        //     return response()->json('erro');
-        // }
-        // competionn
-        
-
-
+     
         $competition = $this->competitionService->creerCompetition($request->all());
 
 

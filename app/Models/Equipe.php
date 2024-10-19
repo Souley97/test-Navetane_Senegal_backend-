@@ -59,7 +59,7 @@ class Equipe extends Model
      */
     public function matchsLocaux()
     {
-        return $this->hasMany(Matches::class, 'equipe_local');
+        return $this->hasMany(Matche::class, 'equipe_local');
     }
 
     /**

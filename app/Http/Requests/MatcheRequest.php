@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class MatchRequest extends FormRequest
+class MatcheRequest extends FormRequest
 {
     /**
      * Déterminer si l'utilisateur est autorisé à faire cette requête.
@@ -24,12 +24,15 @@ class MatchRequest extends FormRequest
     public function rules()
     {
         return [
-            'competition_id' => 'required|exists:competitions,id',
-            'equipe_local' => 'required|string|max:255',
-            'equipe_visiteur' => 'required|string|max:255',
-            'score_local' => 'nullable|integer|min:0',
-            'score_visiteur' => 'nullable|integer|min:0',
-            'date_matche' => 'required|date',
+
+        // 'date', 'lieu', 'equipe_local', 'equipe_visiteur'
+
+        'date' => ['required', 'date', 'after_or_equal:today'],
+        'lieu' => 'required|string|max:255',
+        'equipe_local' => 'required',
+        'equipe_visiteur' => 'required',
+
+        
         ];
     }
 
